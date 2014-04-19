@@ -7,7 +7,7 @@
 #
 ####################################################################################################
 
-waterMarkImageFile = "/INSERT/PATH/TO/WATERMARK/IMAGE/HERE"
+waterMarkImageFile = "./logo.png"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -162,33 +162,28 @@ def applyWaterMarks( fileList, target, maintain, opacityVal, position, invert ):
 		
 		outfile = target + sep + newProxyname + "_wm." + correctFileExtension.lower()
 		if i != outfile: 
-			try: 
-				if 'RGB' not in baseOpenIm.mode:
-					print " Converting %s to RGB mode..." % i
-					baseOpenIm = baseOpenIm.convert('RGB')
+                        if 'RGB' not in baseOpenIm.mode:
+                                print " Converting %s to RGB mode..." % i
+                                baseOpenIm = baseOpenIm.convert('RGB')
 
-				im, degrees = correctImageOrientation( baseOpenIm, ffile )
+                        im, degrees = correctImageOrientation( baseOpenIm, ffile )
 				
-				toSave = wmPrep( waterMarkOpen, im, wmMode, opacityVal, position )
-					
-				if baseOpenIm.format == "JPEG":
-					try: 
-						toSave.save(outfile, correctFileExtension.upper(), quality=95, optimize=1 )
-					except:
-						toSave.save(outfile, correctFileExtension.upper(), quality=95 )
-						
-				else:
-					try: 
-						toSave.save(outfile, correctFileExtension.upper(), optimize=1 )
-					except:
-						toSave.save(outfile, correctFileExtension.upper() )				
+                        toSave = wmPrep( waterMarkOpen, im, wmMode, opacityVal, position )
+                        
+                        if baseOpenIm.format == "JPEG":
+                                try: 
+                                        toSave.save(outfile, correctFileExtension.upper(), quality=95, optimize=1 )
+                                except:
+                                        toSave.save(outfile, correctFileExtension.upper(), quality=95 )
+                        else:
+                                try: 
+                                        toSave.save(outfile, correctFileExtension.upper(), optimize=1 )
+                                except:
+                                        toSave.save(outfile, correctFileExtension.upper() )				
 				
-				print " " + str(fileNumber) + " of " + listLength + " complete."
-				fileNumber = fileNumber + 1
+                        print " " + str(fileNumber) + " of " + listLength + " complete."
+                        fileNumber = fileNumber + 1
 
-			except IOError: 
-				print " Watermarking failed for: ", i
-	
 	print "\n DONE!\n\n"
 	if (sys.platform == "darwin") and (os.environ['VENDOR'] == 'apple'):
 		try:
